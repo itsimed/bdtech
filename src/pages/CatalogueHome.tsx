@@ -32,15 +32,15 @@ const CatalogueHome: React.FC = () => {
       <CatalogueNavbar />
 
       {/* Hero Section */}
-      <section className="h-[calc(100vh-160px)] sm:h-[calc(100vh-180px)] flex items-center justify-center relative overflow-hidden">
+      <section className="min-h-[calc(100vh-160px)] sm:min-h-[calc(100vh-180px)] flex items-center justify-center relative overflow-hidden py-8 sm:py-12 lg:py-16">
         {/* Background gradient */}
         <div className="absolute inset-0 bg-gradient-to-br from-bdtech-light to-bdtech-medium"></div>
         
         {/* Gradient overlay at bottom */}
-        <div className="absolute bottom-0 left-0 right-0 h-64 bg-gradient-to-t from-white via-white/90 via-white/60 to-transparent"></div>
+        <div className="absolute bottom-0 left-0 right-0 h-32 sm:h-48 lg:h-64 bg-gradient-to-t from-white via-white/90 via-white/60 to-transparent"></div>
         
-        {/* Scroll animation at bottom */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
+        {/* Scroll animation at bottom - Hidden on mobile */}
+        <div className="absolute bottom-4 sm:bottom-8 left-1/2 transform -translate-x-1/2 hidden sm:block">
           <motion.div
             animate={{ y: [0, 10, 0] }}
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
@@ -61,15 +61,15 @@ const CatalogueHome: React.FC = () => {
         </div>
         
         {/* Content */}
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 lg:py-16">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8 lg:gap-12 items-center">
             {/* Left Column - Text and Buttons */}
-            <div className="text-left">
+            <div className="text-center lg:text-left">
               <motion.h1
                 initial={{ opacity: 0, x: -30 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.8 }}
-                className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 sm:mb-6 lg:mb-8 text-white"
+                className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-3 sm:mb-4 lg:mb-6 xl:mb-8 text-white leading-tight"
               >
                 Product Catalog
               </motion.h1>
@@ -77,7 +77,7 @@ const CatalogueHome: React.FC = () => {
                 initial={{ opacity: 0, x: -30 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.8, delay: 0.2 }}
-                className="text-lg sm:text-xl lg:text-2xl opacity-90 mb-6 sm:mb-8 lg:mb-10 leading-relaxed text-white"
+                className="text-base sm:text-lg md:text-xl lg:text-2xl opacity-90 mb-4 sm:mb-6 lg:mb-8 xl:mb-10 leading-relaxed text-white px-2 sm:px-0"
               >
                 Discover our complete range of professional IT solutions
               </motion.p>
@@ -85,19 +85,19 @@ const CatalogueHome: React.FC = () => {
                 initial={{ opacity: 0, x: -30 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
-                className="flex flex-col sm:flex-row gap-3 sm:gap-4 lg:gap-6"
+                className="flex flex-col sm:flex-row gap-3 sm:gap-4 lg:gap-6 justify-center lg:justify-start"
               >
                 <Link
                   to="/catalogue/produits"
-                  className="btn-gradient-border inline-flex items-center justify-center space-x-2 px-4 sm:px-6 lg:px-8 py-2 sm:py-3 lg:py-4 rounded-lg font-semibold transition-all duration-200 shadow-lg hover:shadow-xl text-sm sm:text-base lg:text-lg"
+                  className="btn-gradient-border inline-flex items-center justify-center space-x-2 px-4 sm:px-6 lg:px-8 py-2.5 sm:py-3 lg:py-4 rounded-lg font-semibold transition-all duration-200 shadow-lg hover:shadow-xl text-sm sm:text-base lg:text-lg w-full sm:w-auto"
                 >
-                  <Package size={18} className="sm:w-4 sm:h-4 lg:w-5 lg:h-5" />
+                  <Package size={16} className="sm:w-4 sm:h-4 lg:w-5 lg:h-5" />
                   <span>Explore all products</span>
                 </Link>
                 <ContactButton 
                   variant="primary"
                   size="lg"
-                  className="px-6 sm:px-8 py-3 sm:py-4 text-sm sm:text-base"
+                  className="px-4 sm:px-6 lg:px-8 py-2.5 sm:py-3 lg:py-4 text-sm sm:text-base lg:text-lg w-full sm:w-auto"
                 >
                   Contact an expert
                 </ContactButton>
@@ -109,12 +109,12 @@ const CatalogueHome: React.FC = () => {
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.3 }}
-              className="flex justify-center lg:justify-end"
+              className="flex justify-center lg:justify-end order-first lg:order-last"
             >
               <img 
                 src="https://storage.googleapis.com/bdtech/public/cataloghero.webp" 
                 alt="BDTECH Catalogue Hero" 
-                className="w-full max-w-md lg:max-w-lg xl:max-w-xl object-contain"
+                className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl object-contain"
               />
             </motion.div>
           </div>
@@ -257,17 +257,6 @@ const CatalogueHome: React.FC = () => {
               <p className="text-gray-300 mb-6 max-w-md">
                 Expert IT Services for Enhanced Performance. Empowering businesses through innovation, security, and reliable technology solutions.
               </p>
-              <div className="flex space-x-4">
-                <a
-                  href="https://www.linkedin.com/company/bd-tech-solutions/?originalSubdomain=fr"
-                  className="text-gray-300 hover:text-bdtech-light transition-colors duration-200"
-                  aria-label="LinkedIn"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Linkedin size={20} />
-                </a>
-              </div>
             </div>
 
             {/* Contact Info */}

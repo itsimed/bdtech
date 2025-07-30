@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Linkedin, Mail, Phone, MapPin, Home, User, Settings, MessageCircle, LogIn } from 'lucide-react';
+import { Menu, X, Linkedin, Mail, Phone, MapPin, Home, User, Settings, MessageCircle, Package } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { contactData } from '../data/home';
 
@@ -10,16 +10,13 @@ interface LayoutProps {
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
 
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-      
       // Detect active section
-      const sections = ['home', 'about', 'services', 'contact'];
+      const sections = ['home', 'about', 'services', 'trust', 'contact'];
       const scrollPosition = window.scrollY + 100;
       
       for (const section of sections) {
@@ -44,54 +41,46 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     { name: 'Home', href: '#home', isLink: false, id: 'home', icon: Home },
     { name: 'About', href: '#about', isLink: false, id: 'about', icon: User },
     { name: 'Services', href: '#services', isLink: false, id: 'services', icon: Settings },
+    { name: 'Partners', href: '#trust', isLink: false, id: 'trust', icon: MessageCircle },
     { name: 'Contact', href: '#contact', isLink: false, id: 'contact', icon: MessageCircle }
   ];
 
   const scrollToSection = (href: string) => {
     const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
     setIsMenuOpen(false);
+    if (element) {
+      setTimeout(() => {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }, 300);
+    }
   };
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Navbar */}
-      <motion.nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled 
-            ? 'bg-white/95 backdrop-blur-md shadow-lg' 
-            : 'bg-white/90 backdrop-blur-sm shadow-sm'
-        }`}
-        initial={{ y: -100 }}
-        animate={{ y: 0 }}
-        transition={{ duration: 0.6 }}
-      >
-        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
-          {/* Mobile Layout - Structure complètement différente */}
-          <div className="lg:hidden relative h-16">
-            {/* Logo à gauche */}
-            <div className="absolute left-0 top-1/2 transform -translate-y-1/2">
-              <Link to="/" className="block">
-                <img
-                  src="https://storage.googleapis.com/bdtech/public/logonavbar.webp"
-                  alt="BDTECH Solutions Logo"
-                  className="w-28 h-28 object-contain"
-                />
-              </Link>
-            </div>
-            
-            {/* Bouton hamburger à droite */}
-            <div className="absolute right-8 top-1/2 transform -translate-y-1/2">
-              <button
-                onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="text-bdtech-dark hover:text-bdtech-medium p-3 bg-white rounded-lg shadow-sm"
-              >
-                {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
-              </button>
-            </div>
-          </div>
+             {/* Navbar */}
+               <nav
+          className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md shadow-lg"
+        >
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                      {/* Mobile Layout - Structure simple comme CatalogueNavbar */}
+                                    <div className="lg:hidden flex items-center justify-between h-16">
+               {/* Logo à gauche */}
+               <Link to="/" className="flex items-center">
+                 <img
+                   src="https://storage.googleapis.com/bdtech/public/logonavbar.webp"
+                   alt="BDTECH Solutions Logo"
+                   className="w-14 h-14 sm:w-16 sm:h-16 object-contain"
+                 />
+               </Link>
+               
+               {/* Bouton hamburger à droite */}
+               <button
+                 onClick={() => setIsMenuOpen(!isMenuOpen)}
+                 className="text-bdtech-dark hover:text-bdtech-medium transition-colors duration-200 p-2 bg-white rounded-lg shadow-sm hover:shadow-md flex items-center justify-center w-10 h-10"
+               >
+                 {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
+               </button>
+             </div>
 
           {/* Desktop Layout */}
           <div className="hidden lg:flex items-center justify-between h-20">
@@ -128,64 +117,49 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
             <Link to="/login">
               <button className="bg-bdtech-medium hover:bg-bdtech-dark text-white px-6 py-2 rounded-lg transition-colors duration-200 font-medium">
-                Login
+                Catalog
               </button>
             </Link>
           </div>
 
-          {/* Mobile Navigation - Design amélioré */}
-          <AnimatePresence>
-            {isMenuOpen && (
-              <motion.div
-                initial={{ opacity: 0, height: 0 }}
-                animate={{ opacity: 1, height: 'auto' }}
-                exit={{ opacity: 0, height: 0 }}
-                transition={{ duration: 0.3 }}
-                className="lg:hidden border-t border-gray-100 bg-white shadow-lg fixed top-16 left-0 right-0 w-screen"
-              >
-                <div className="py-4 px-4 sm:px-6 max-w-full">
-                  {/* Navigation Items */}
-                  <div className="space-y-2 mb-6">
-                    {navItems.map((item, index) => (
-                      <motion.button
-                        key={item.name}
-                        initial={{ opacity: 0, x: -20 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.1 }}
-                        onClick={() => scrollToSection(item.href)}
-                        className={`w-full flex items-center px-4 py-4 text-left rounded-xl transition-all duration-200 font-medium ${
-                          activeSection === item.id 
-                            ? 'bg-bdtech-medium text-white shadow-md' 
-                            : 'text-bdtech-dark hover:text-bdtech-medium hover:bg-gray-50'
-                        }`}
-                      >
-                        <span className="text-base">{item.name}</span>
-                      </motion.button>
-                    ))}
-                  </div>
+                                          {/* Mobile Navigation - Design amélioré */}
+           {isMenuOpen && (
+             <div className="lg:hidden border-t border-gray-100 bg-white shadow-lg fixed top-16 left-0 right-0 w-full z-40">
+                 <div className="py-3 sm:py-4 px-3 sm:px-4 md:px-6 max-w-full">
+                   {/* Navigation Items */}
+                   <div className="space-y-1.5 sm:space-y-2 mb-4 sm:mb-6">
+                     {navItems.map((item, index) => (
+                       <button
+                         key={item.name}
+                         onClick={() => scrollToSection(item.href)}
+                         className={`w-full flex items-center px-3 sm:px-4 py-2.5 sm:py-3 md:py-4 text-left rounded-lg sm:rounded-xl transition-all duration-200 font-medium ${
+                           activeSection === item.id 
+                             ? 'bg-bdtech-medium text-white shadow-md' 
+                             : 'text-bdtech-dark hover:text-bdtech-medium hover:bg-gray-50'
+                         }`}
+                       >
+                         <span className="text-xs sm:text-sm md:text-base">{item.name}</span>
+                       </button>
+                     ))}
+                   </div>
 
-                  {/* Divider */}
-                  <div className="border-t border-gray-200 mb-6"></div>
+                   {/* Divider */}
+                   <div className="border-t border-gray-200 mb-4 sm:mb-6"></div>
 
-                  {/* Login Button */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4 }}
-                  >
-                    <Link to="/login" className="block">
-                      <button className="w-full flex items-center justify-center space-x-3 bg-gradient-to-r from-bdtech-medium to-bdtech-dark text-white px-6 py-4 rounded-xl font-semibold text-base shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105">
-                        <LogIn size={20} />
-                        <span>Login</span>
-                      </button>
-                    </Link>
-                  </motion.div>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+                   {/* Login Button */}
+                   <div>
+                     <Link to="/login" className="block">
+                        <button className="w-full flex items-center justify-center space-x-1.5 sm:space-x-2 md:space-x-3 bg-gradient-to-r from-bdtech-medium to-bdtech-dark text-white px-3 sm:px-4 md:px-6 py-2.5 sm:py-3 md:py-4 rounded-lg sm:rounded-xl font-semibold text-xs sm:text-sm md:text-base shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105">
+                          <Package size={16} className="w-4 h-4 sm:w-5 sm:h-5" />
+                          <span>Catalog</span>
+                        </button>
+                      </Link>
+                   </div>
+                 </div>
+               </div>
+             )}
         </div>
-      </motion.nav>
+      </nav>
 
       {/* Main Content */}
       <main className="pt-16 lg:pt-20">
@@ -205,20 +179,9 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                   className="h-10 sm:h-12 w-auto"
                 />
               </div>
-              <p className="text-gray-300 mb-4 sm:mb-6 max-w-md text-sm sm:text-base">
-                Expert IT Services for Enhanced Performance. Empowering businesses through innovation, security, and reliable technology solutions.
-              </p>
-              <div className="flex space-x-4">
-                <a
-                  href="https://www.linkedin.com/company/bd-tech-solutions/?originalSubdomain=fr"
-                  className="text-gray-300 hover:text-bdtech-light transition-colors duration-200"
-                  aria-label="LinkedIn"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <Linkedin size={18} className="sm:w-5 sm:h-5" />
-                </a>
-              </div>
+                             <p className="text-gray-300 mb-4 sm:mb-6 max-w-md text-sm sm:text-base">
+                 Expert IT Services for Enhanced Performance. Empowering businesses through innovation, security, and reliable technology solutions.
+               </p>
             </div>
 
             {/* Contact Info */}

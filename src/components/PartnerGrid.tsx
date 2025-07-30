@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 
 const PartnerGrid: React.FC = () => {
   const [position, setPosition] = useState(0);
+  const [direction, setDirection] = useState(-1); // -1 for left, 1 for right
 
   const partnerImages = [
     {
@@ -12,52 +13,69 @@ const PartnerGrid: React.FC = () => {
     },
     {
       id: 2,
-      src: "https://storage.googleapis.com/bdtech/public/partners/Design%20sans%20titre%20(7).webp",
+      src: "https://storage.googleapis.com/bdtech/public/partners/Design%20sans%20titre%20(1).webp",
       alt: "Partner 2"
     },
     {
       id: 3,
-      src: "https://storage.googleapis.com/bdtech/public/partners/Design%20sans%20titre%20(6).webp",
+      src: "https://storage.googleapis.com/bdtech/public/partners/Design%20sans%20titre%20(7).webp",
       alt: "Partner 3"
     },
     {
       id: 4,
-      src: "https://storage.googleapis.com/bdtech/public/partners/Design%20sans%20titre%20(5).webp",
+      src: "https://storage.googleapis.com/bdtech/public/partners/Design%20sans%20titre%20(6).webp",
       alt: "Partner 4"
     },
     {
       id: 5,
-      src: "https://storage.googleapis.com/bdtech/public/partners/Design%20sans%20titre%20(4).webp",
+      src: "https://storage.googleapis.com/bdtech/public/partners/Design%20sans%20titre%20(5).webp",
       alt: "Partner 5"
     },
     {
       id: 6,
-      src: "https://storage.googleapis.com/bdtech/public/partners/Design%20sans%20titre%20(3).webp",
+      src: "https://storage.googleapis.com/bdtech/public/partners/Design%20sans%20titre%20(4).webp",
       alt: "Partner 6"
     },
     {
       id: 7,
-      src: "https://storage.googleapis.com/bdtech/public/partners/Design%20sans%20titre%20(2).webp",
+      src: "https://storage.googleapis.com/bdtech/public/partners/Design%20sans%20titre%20(3).webp",
       alt: "Partner 7"
     },
     {
       id: 8,
-      src: "https://storage.googleapis.com/bdtech/public/partners/Design%20sans%20titre%20(1).webp",
+      src: "https://storage.googleapis.com/bdtech/public/partners/Design%20sans%20titre%20(2).webp",
       alt: "Partner 8"
     }
   ];
 
-  // Continuous rotation
+  // Continuous rotation with direction change
   useEffect(() => {
     const interval = setInterval(() => {
-      setPosition((prev) => prev - 1);
+      setPosition((prev) => {
+        // Calculate the width of one complete set of images
+        const imageWidth = 20; // Base width of each image
+        const spacing = 16; // Base spacing between images
+        const totalWidth = partnerImages.length * (imageWidth + spacing);
+        
+        // Change direction when reaching the end or beginning
+        if (prev <= -totalWidth) {
+          setDirection(1); // Change to right direction
+          return prev + 1;
+        } else if (prev >= 0) {
+          setDirection(-1); // Change to left direction
+          return prev - 1;
+        }
+        
+        // Continue in current direction
+        return prev + direction;
+      });
     }, 50); // Smooth continuous movement
 
     return () => clearInterval(interval);
-  }, []);
+  }, [direction]);
 
-  // Duplicate images for seamless loop
-  const duplicatedImages = [...partnerImages, ...partnerImages, ...partnerImages];
+  // Duplicate images for seamless loop - need 2 sets for smooth infinite loop
+  const duplicatedImages = [...partnerImages, ...partnerImages];
 
   return (
     <section className="py-8 sm:py-12 lg:py-16 xl:py-20 bg-white">

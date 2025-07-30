@@ -3,22 +3,23 @@ import { motion } from 'framer-motion';
 
 const TrustCarousel: React.FC = () => {
   const [position, setPosition] = useState(0);
+  const [direction, setDirection] = useState(-1); // -1 for left, 1 for right
 
   const trustImages = [
     {
       id: 1,
-      src: "https://storage.googleapis.com/bdtech/public/trust/chaumet.webp",
-      alt: "Chaumet"
-    },
-    {
-      id: 2,
       src: "https://storage.googleapis.com/bdtech/public/trust/lvmh.webp",
       alt: "LVMH"
     },
     {
-      id: 3,
+      id: 2,
       src: "https://storage.googleapis.com/bdtech/public/trust/sephore.webp",
       alt: "Sephora"
+    },
+    {
+      id: 3,
+      src: "https://storage.googleapis.com/bdtech/public/trust/chaumet.webp",
+      alt: "Chaumet"
     },
     {
       id: 4,
@@ -32,17 +33,34 @@ const TrustCarousel: React.FC = () => {
     }
   ];
 
-  // Continuous rotation
+  // Continuous rotation with direction change
   useEffect(() => {
     const interval = setInterval(() => {
-      setPosition((prev) => prev - 1);
+      setPosition((prev) => {
+        // Calculate the width of one complete set of images
+        const imageWidth = 20; // Base width of each image
+        const spacing = 16; // Base spacing between images
+        const totalWidth = trustImages.length * (imageWidth + spacing);
+        
+        // Change direction when reaching the end or beginning
+        if (prev <= -totalWidth) {
+          setDirection(1); // Change to right direction
+          return prev + 1;
+        } else if (prev >= 0) {
+          setDirection(-1); // Change to left direction
+          return prev - 1;
+        }
+        
+        // Continue in current direction
+        return prev + direction;
+      });
     }, 50); // Smooth continuous movement
 
     return () => clearInterval(interval);
-  }, []);
+  }, [direction]);
 
-  // Duplicate images for seamless loop
-  const duplicatedImages = [...trustImages, ...trustImages, ...trustImages];
+  // Duplicate images for seamless loop - need 2 sets for smooth infinite loop
+  const duplicatedImages = [...trustImages, ...trustImages];
 
   return (
     <section className="py-8 sm:py-12 lg:py-16 xl:py-20 bg-white">

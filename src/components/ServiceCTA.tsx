@@ -21,10 +21,10 @@ const ServiceCTA: React.FC = () => {
         >
           <div className="bg-gradient-to-r from-bdtech-light to-bdtech-medium rounded-lg sm:rounded-xl lg:rounded-2xl p-6 sm:p-8 lg:p-12 text-white">
             <h3 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold mb-3 sm:mb-4 lg:mb-6">
-              Prêt à commencer votre transformation IT ?
+              Ready to start your IT transformation?
             </h3>
             <p className="text-sm sm:text-base md:text-lg mb-4 sm:mb-6 lg:mb-8 opacity-90 max-w-2xl mx-auto px-2 sm:px-4">
-              Contactez-nous dès aujourd'hui pour un audit gratuit de votre infrastructure
+              Contact us today for a free audit of your infrastructure
             </p>
             <motion.button
               onClick={scrollToContact}
@@ -32,7 +32,7 @@ const ServiceCTA: React.FC = () => {
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >
-              Commencer maintenant
+              Get Started Now
             </motion.button>
           </div>
         </motion.div>

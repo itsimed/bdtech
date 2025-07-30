@@ -106,7 +106,7 @@ const CatalogueNavbar: React.FC = () => {
           <div className="flex items-center justify-between h-14 sm:h-16">
             {/* Logo */}
             <button 
-              onClick={() => handleNavigation('/catalogue')}
+              onClick={() => handleNavigation('/')}
               className="flex items-center focus:outline-none focus:ring-0 focus:border-0 focus:shadow-none"
             >
               <img 
@@ -156,9 +156,9 @@ const CatalogueNavbar: React.FC = () => {
               {/* Mobile Menu Button */}
               <button
                 onClick={toggleMobileMenu}
-                className="sm:hidden text-bdtech-dark hover:text-bdtech-medium transition-colors duration-200"
+                className="sm:hidden text-bdtech-dark hover:text-bdtech-medium transition-colors duration-200 p-2 bg-white rounded-lg shadow-sm hover:shadow-md flex items-center justify-center w-10 h-10"
               >
-                {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+                {isMobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
               </button>
             </div>
           </div>
