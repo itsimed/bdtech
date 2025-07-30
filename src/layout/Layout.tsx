@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Mail, Phone, MapPin, Home, User, Settings, MessageCircle, Package } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { contactData } from '../data/home';
@@ -37,6 +37,27 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Handle click outside mobile menu
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement;
+      const mobileMenu = document.querySelector('.mobile-menu');
+      const hamburgerButton = document.querySelector('.hamburger-button');
+      
+      if (isMenuOpen && mobileMenu && !mobileMenu.contains(target) && !hamburgerButton?.contains(target)) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    if (isMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isMenuOpen]);
+
   const navItems = [
     { name: 'Home', href: '#home', isLink: false, id: 'home', icon: Home },
     { name: 'About', href: '#about', isLink: false, id: 'about', icon: User },
@@ -55,6 +76,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     }
   };
 
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <div className="min-h-screen bg-white">
              {/* Navbar */}
@@ -65,7 +90,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                       {/* Mobile Layout - Structure simple comme CatalogueNavbar */}
                                     <div className="lg:hidden flex items-center justify-between h-16">
                {/* Logo à gauche */}
-               <Link to="/" className="flex items-center">
+               <Link to="/" className="flex items-center" onClick={scrollToTop}>
                  <img
                    src="https://storage.googleapis.com/bdtech/public/logonavbar.webp"
                    alt="BDTECH Solutions Logo"
@@ -74,17 +99,42 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                </Link>
                
                {/* Bouton hamburger à droite */}
-               <button
+               <motion.button
                  onClick={() => setIsMenuOpen(!isMenuOpen)}
-                 className="text-bdtech-dark hover:text-bdtech-medium transition-colors duration-200 p-2 bg-white rounded-lg shadow-sm hover:shadow-md flex items-center justify-center w-10 h-10"
+                 className="hamburger-button text-bdtech-dark hover:text-bdtech-medium transition-colors duration-200 p-2 bg-white rounded-lg shadow-sm hover:shadow-md flex items-center justify-center w-10 h-10"
+                 whileHover={{ scale: 1.05 }}
+                 whileTap={{ scale: 0.95 }}
+                 transition={{ duration: 0.1 }}
                >
-                 {isMenuOpen ? <X size={20} /> : <Menu size={20} />}
-               </button>
+                 <AnimatePresence mode="wait">
+                   {isMenuOpen ? (
+                     <motion.div
+                       key="close"
+                       initial={{ rotate: -90, opacity: 0 }}
+                       animate={{ rotate: 0, opacity: 1 }}
+                       exit={{ rotate: 90, opacity: 0 }}
+                       transition={{ duration: 0.2 }}
+                     >
+                       <X size={20} />
+                     </motion.div>
+                   ) : (
+                     <motion.div
+                       key="menu"
+                       initial={{ rotate: 90, opacity: 0 }}
+                       animate={{ rotate: 0, opacity: 1 }}
+                       exit={{ rotate: -90, opacity: 0 }}
+                       transition={{ duration: 0.2 }}
+                     >
+                       <Menu size={20} />
+                     </motion.div>
+                   )}
+                 </AnimatePresence>
+               </motion.button>
              </div>
 
           {/* Desktop Layout */}
           <div className="hidden lg:flex items-center justify-between h-20">
-            <Link to="/" className="flex items-center">
+            <Link to="/" className="flex items-center" onClick={scrollToTop}>
               <img
                 src="https://storage.googleapis.com/bdtech/public/logonavbar.webp"
                 alt="BDTECH Solutions Logo"
@@ -122,14 +172,21 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             </Link>
           </div>
 
-                                          {/* Mobile Navigation - Design amélioré */}
-           {isMenuOpen && (
-             <div className="lg:hidden border-t border-gray-100 bg-white shadow-lg fixed top-16 left-0 right-0 w-full z-40">
+                                                                                     {/* Mobile Navigation - Design amélioré */}
+            <AnimatePresence>
+              {isMenuOpen && (
+                <motion.div 
+                  className="mobile-menu lg:hidden border-t border-gray-100 bg-white shadow-lg fixed top-16 left-0 right-0 w-full z-40"
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
+                >
                  <div className="py-3 sm:py-4 px-3 sm:px-4 md:px-6 max-w-full">
                    {/* Navigation Items */}
                    <div className="space-y-1.5 sm:space-y-2 mb-4 sm:mb-6">
-                     {navItems.map((item) => (
-                       <button
+                     {navItems.map((item, index) => (
+                       <motion.button
                          key={item.name}
                          onClick={() => scrollToSection(item.href)}
                          className={`w-full flex items-center px-3 sm:px-4 py-2.5 sm:py-3 md:py-4 text-left rounded-lg sm:rounded-xl transition-all duration-200 font-medium ${
@@ -137,9 +194,16 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                              ? 'bg-bdtech-medium text-white shadow-md' 
                              : 'text-bdtech-dark hover:text-bdtech-medium hover:bg-gray-50'
                          }`}
+                         initial={{ opacity: 0, x: -20 }}
+                         animate={{ opacity: 1, x: 0 }}
+                         transition={{ 
+                           duration: 0.3, 
+                           delay: 0.1 + (index * 0.05),
+                           ease: "easeOut" 
+                         }}
                        >
                          <span className="text-xs sm:text-sm md:text-base">{item.name}</span>
-                       </button>
+                       </motion.button>
                      ))}
                    </div>
 
@@ -147,17 +211,26 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                    <div className="border-t border-gray-200 mb-4 sm:mb-6"></div>
 
                    {/* Login Button */}
-                   <div>
+                   <motion.div
+                     initial={{ opacity: 0, y: 20 }}
+                     animate={{ opacity: 1, y: 0 }}
+                     transition={{ 
+                       duration: 0.3, 
+                       delay: 0.4,
+                       ease: "easeOut" 
+                     }}
+                   >
                      <Link to="/login" className="block">
                         <button className="w-full flex items-center justify-center space-x-1.5 sm:space-x-2 md:space-x-3 bg-gradient-to-r from-bdtech-medium to-bdtech-dark text-white px-3 sm:px-4 md:px-6 py-2.5 sm:py-3 md:py-4 rounded-lg sm:rounded-xl font-semibold text-xs sm:text-sm md:text-base shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105">
                           <Package size={16} className="w-4 h-4 sm:w-5 sm:h-5" />
                           <span>Catalog</span>
                         </button>
                       </Link>
-                   </div>
-                 </div>
-               </div>
-             )}
+                   </motion.div>
+                                   </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
         </div>
       </nav>
 

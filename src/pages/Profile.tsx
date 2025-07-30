@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-
 import { 
   User, 
   Mail, 
@@ -27,16 +26,20 @@ const Profile: React.FC = () => {
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  
   const [passwordData, setPasswordData] = useState({
     currentPassword: '',
     newPassword: '',
     confirmPassword: ''
   });
+  
   const [usernameData, setUsernameData] = useState({
     currentUsername: 'jean.dupont',
     newUsername: 'jean.dupont'
   });
+  
   const [showUsernameForm, setShowUsernameForm] = useState(false);
+  
   const [formData, setFormData] = useState({
     firstName: 'Jean',
     lastName: 'Dupont',
@@ -71,12 +74,10 @@ const Profile: React.FC = () => {
   const handleSave = () => {
     console.log('Saving profile data:', formData);
     setIsEditing(false);
-    // Ici on pourrait ajouter une API call pour sauvegarder
   };
 
   const handleCancel = () => {
     setIsEditing(false);
-    // Reset form data to original values
     setFormData({
       firstName: 'Jean',
       lastName: 'Dupont',
@@ -100,7 +101,6 @@ const Profile: React.FC = () => {
       newPassword: '',
       confirmPassword: ''
     });
-    // Ici on pourrait ajouter une API call pour changer le mot de passe
   };
 
   const handlePasswordCancel = () => {
@@ -123,7 +123,6 @@ const Profile: React.FC = () => {
       currentUsername: prev.newUsername,
       newUsername: prev.newUsername
     }));
-    // Ici on pourrait ajouter une API call pour changer le nom d'utilisateur
   };
 
   const handleUsernameCancel = () => {
@@ -162,42 +161,42 @@ const Profile: React.FC = () => {
   ];
 
   const renderProfileTab = () => (
-    <div className="space-y-4 sm:space-y-6">
+    <div className="space-y-6">
       {/* Profile Header */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 sm:p-6">
+      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
         <div className="flex flex-col sm:flex-row items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-6">
           <div className="relative">
-            <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-bdtech-light to-bdtech-medium rounded-full flex items-center justify-center">
-              <span className="text-white font-bold text-2xl sm:text-3xl">
+            <div className="w-24 h-24 bg-gradient-to-br from-bdtech-light to-bdtech-medium rounded-full flex items-center justify-center">
+              <span className="text-white font-bold text-3xl">
                 {formData.firstName.charAt(0)}{formData.lastName.charAt(0)}
               </span>
             </div>
-            <button className="absolute -bottom-1 -right-1 w-7 h-7 sm:w-8 sm:h-8 bg-white rounded-full border-2 border-gray-200 flex items-center justify-center hover:border-bdtech-light transition-colors duration-200">
-              <Camera size={14} className="sm:w-4 sm:h-4 text-gray-600" />
+            <button className="absolute -bottom-1 -right-1 w-8 h-8 bg-white rounded-full border-2 border-gray-200 flex items-center justify-center hover:border-bdtech-light transition-colors duration-200">
+              <Camera size={16} className="text-gray-600" />
             </button>
           </div>
           <div className="flex-1 text-center sm:text-left">
-            <h2 className="text-xl sm:text-2xl font-bold text-bdtech-dark">
+            <h2 className="text-2xl font-bold text-bdtech-dark">
               {formData.firstName} {formData.lastName}
             </h2>
-            <p className="text-sm sm:text-base text-gray-600">{formData.position} at {formData.company}</p>
-            <p className="text-xs sm:text-sm text-gray-500">Member since January 2024</p>
+            <p className="text-gray-600">{formData.position} at {formData.company}</p>
+            <p className="text-sm text-gray-500">Member since January 2024</p>
           </div>
           <button
             onClick={() => setIsEditing(!isEditing)}
-            className="flex items-center space-x-2 px-3 sm:px-4 py-2 bg-bdtech-light text-white rounded-lg hover:bg-bdtech-medium transition-colors duration-200 text-sm sm:text-base"
+            className="flex items-center space-x-2 px-4 py-2 bg-bdtech-light text-white rounded-lg hover:bg-bdtech-medium transition-colors duration-200"
           >
-            <Edit size={14} className="sm:w-4 sm:h-4" />
+            <Edit size={16} />
             <span>{isEditing ? 'Cancel' : 'Edit'}</span>
           </button>
         </div>
       </div>
 
       {/* Profile Form */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 sm:p-6">
-        <h3 className="text-lg sm:text-xl font-semibold text-bdtech-dark mb-4 sm:mb-6">Personal Information</h3>
+      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+        <h3 className="text-xl font-semibold text-bdtech-dark mb-6">Personal Information</h3>
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">First Name</label>
             <input
@@ -205,7 +204,7 @@ const Profile: React.FC = () => {
               value={formData.firstName}
               onChange={(e) => handleInputChange('firstName', e.target.value)}
               disabled={!isEditing}
-              className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-bdtech-light focus:border-transparent disabled:bg-gray-50 disabled:text-gray-500"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bdtech-light focus:border-transparent disabled:bg-gray-50 disabled:text-gray-500"
             />
           </div>
           
@@ -216,7 +215,7 @@ const Profile: React.FC = () => {
               value={formData.lastName}
               onChange={(e) => handleInputChange('lastName', e.target.value)}
               disabled={!isEditing}
-              className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-bdtech-light focus:border-transparent disabled:bg-gray-50 disabled:text-gray-500"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bdtech-light focus:border-transparent disabled:bg-gray-50 disabled:text-gray-500"
             />
           </div>
           
@@ -229,7 +228,7 @@ const Profile: React.FC = () => {
                 value={formData.email}
                 onChange={(e) => handleInputChange('email', e.target.value)}
                 disabled={!isEditing}
-                className="w-full pl-9 sm:pl-10 pr-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-bdtech-light focus:border-transparent disabled:bg-gray-50 disabled:text-gray-500"
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bdtech-light focus:border-transparent disabled:bg-gray-50 disabled:text-gray-500"
               />
             </div>
           </div>
@@ -237,7 +236,7 @@ const Profile: React.FC = () => {
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Phone</label>
             <div className="relative">
-              <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
+              <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={18} />
               <input
                 type="tel"
                 value={formData.phone}
@@ -257,7 +256,7 @@ const Profile: React.FC = () => {
                 value={formData.company}
                 onChange={(e) => handleInputChange('company', e.target.value)}
                 disabled={!isEditing}
-                className="w-full pl-9 sm:pl-10 pr-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-bdtech-light focus:border-transparent disabled:bg-gray-50 disabled:text-gray-500"
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bdtech-light focus:border-transparent disabled:bg-gray-50 disabled:text-gray-500"
               />
             </div>
           </div>
@@ -269,7 +268,7 @@ const Profile: React.FC = () => {
               value={formData.position}
               onChange={(e) => handleInputChange('position', e.target.value)}
               disabled={!isEditing}
-              className="w-full px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-bdtech-light focus:border-transparent disabled:bg-gray-50 disabled:text-gray-500"
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bdtech-light focus:border-transparent disabled:bg-gray-50 disabled:text-gray-500"
             />
           </div>
           
@@ -282,7 +281,7 @@ const Profile: React.FC = () => {
                 value={formData.address}
                 onChange={(e) => handleInputChange('address', e.target.value)}
                 disabled={!isEditing}
-                className="w-full pl-9 sm:pl-10 pr-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-bdtech-light focus:border-transparent disabled:bg-gray-50 disabled:text-gray-500"
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bdtech-light focus:border-transparent disabled:bg-gray-50 disabled:text-gray-500"
               />
             </div>
           </div>
@@ -292,14 +291,14 @@ const Profile: React.FC = () => {
           <div className="flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-4 mt-6 pt-6 border-t border-gray-200">
             <button
               onClick={handleCancel}
-              className="flex items-center justify-center space-x-2 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors duration-200 text-sm sm:text-base"
+              className="flex items-center justify-center space-x-2 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors duration-200"
             >
               <X size={16} />
               <span>Cancel</span>
             </button>
             <button
               onClick={handleSave}
-              className="flex items-center justify-center space-x-2 px-4 py-2 bg-bdtech-medium text-white rounded-lg hover:bg-bdtech-dark transition-colors duration-200 text-sm sm:text-base"
+              className="flex items-center justify-center space-x-2 px-4 py-2 bg-bdtech-medium text-white rounded-lg hover:bg-bdtech-dark transition-colors duration-200"
             >
               <Save size={16} />
               <span>Save</span>
@@ -311,15 +310,15 @@ const Profile: React.FC = () => {
   );
 
   const renderSecurityTab = () => (
-    <div className="space-y-4 sm:space-y-6">
+    <div className="space-y-6">
       {/* Username Section */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 sm:p-6">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6 space-y-3 sm:space-y-0">
-          <h3 className="text-lg sm:text-xl font-semibold text-bdtech-dark">Username</h3>
+      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 space-y-3 sm:space-y-0">
+          <h3 className="text-xl font-semibold text-bdtech-dark">Username</h3>
           {!showUsernameForm && (
             <button
               onClick={() => setShowUsernameForm(true)}
-              className="flex items-center justify-center space-x-2 px-3 sm:px-4 py-2 bg-bdtech-light text-white rounded-lg hover:bg-bdtech-medium transition-colors duration-200 text-sm sm:text-base"
+              className="flex items-center justify-center space-x-2 px-4 py-2 bg-bdtech-light text-white rounded-lg hover:bg-bdtech-medium transition-colors duration-200"
             >
               <User size={16} />
               <span>Change Username</span>
@@ -337,7 +336,7 @@ const Profile: React.FC = () => {
                   type="text"
                   value={usernameData.currentUsername}
                   disabled
-                  className="w-full pl-9 sm:pl-10 pr-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg bg-gray-50 text-gray-500"
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg bg-gray-50 text-gray-500"
                 />
               </div>
             </div>
@@ -350,7 +349,7 @@ const Profile: React.FC = () => {
                   type="text"
                   value={usernameData.newUsername}
                   onChange={(e) => handleUsernameChange('newUsername', e.target.value)}
-                  className="w-full pl-9 sm:pl-10 pr-4 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-bdtech-light focus:border-transparent"
+                  className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bdtech-light focus:border-transparent"
                   placeholder="Enter your new username"
                 />
               </div>
@@ -359,14 +358,14 @@ const Profile: React.FC = () => {
             <div className="flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-4 pt-4">
               <button
                 onClick={handleUsernameCancel}
-                className="flex items-center justify-center space-x-2 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors duration-200 text-sm sm:text-base"
+                className="flex items-center justify-center space-x-2 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors duration-200"
               >
                 <X size={16} />
-                <span>Annuler</span>
+                <span>Cancel</span>
               </button>
               <button
                 onClick={handleUsernameSave}
-                className="flex items-center justify-center space-x-2 px-4 py-2 bg-bdtech-medium text-white rounded-lg hover:bg-bdtech-dark transition-colors duration-200 text-sm sm:text-base"
+                className="flex items-center justify-center space-x-2 px-4 py-2 bg-bdtech-medium text-white rounded-lg hover:bg-bdtech-dark transition-colors duration-200"
               >
                 <Save size={16} />
                 <span>Change Username</span>
@@ -374,12 +373,12 @@ const Profile: React.FC = () => {
             </div>
           </div>
         ) : (
-          <div className="flex items-center justify-between p-3 sm:p-4 border border-gray-200 rounded-lg">
+          <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
             <div className="flex items-center space-x-3">
               <User className="text-bdtech-medium" size={18} />
               <div>
-                <h4 className="font-semibold text-bdtech-dark text-sm sm:text-base">Username</h4>
-                <p className="text-xs sm:text-sm text-gray-600">{usernameData.currentUsername}</p>
+                <h4 className="font-semibold text-bdtech-dark">Username</h4>
+                <p className="text-sm text-gray-600">{usernameData.currentUsername}</p>
               </div>
             </div>
           </div>
@@ -387,13 +386,13 @@ const Profile: React.FC = () => {
       </div>
 
       {/* Password Section */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 sm:p-6">
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4 sm:mb-6 space-y-3 sm:space-y-0">
-          <h3 className="text-lg sm:text-xl font-semibold text-bdtech-dark">Password</h3>
+      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 space-y-3 sm:space-y-0">
+          <h3 className="text-xl font-semibold text-bdtech-dark">Password</h3>
           {!showPasswordForm && (
             <button
               onClick={() => setShowPasswordForm(true)}
-              className="flex items-center justify-center space-x-2 px-3 sm:px-4 py-2 bg-bdtech-light text-white rounded-lg hover:bg-bdtech-medium transition-colors duration-200 text-sm sm:text-base"
+              className="flex items-center justify-center space-x-2 px-4 py-2 bg-bdtech-light text-white rounded-lg hover:bg-bdtech-medium transition-colors duration-200"
             >
               <Lock size={16} />
               <span>Change Password</span>
@@ -411,7 +410,7 @@ const Profile: React.FC = () => {
                   type={showCurrentPassword ? "text" : "password"}
                   value={passwordData.currentPassword}
                   onChange={(e) => handlePasswordChange('currentPassword', e.target.value)}
-                  className="w-full pl-9 sm:pl-10 pr-10 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-bdtech-light focus:border-transparent"
+                  className="w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bdtech-light focus:border-transparent"
                   placeholder="Enter your current password"
                 />
                 <button
@@ -432,7 +431,7 @@ const Profile: React.FC = () => {
                   type={showNewPassword ? "text" : "password"}
                   value={passwordData.newPassword}
                   onChange={(e) => handlePasswordChange('newPassword', e.target.value)}
-                  className="w-full pl-9 sm:pl-10 pr-10 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-bdtech-light focus:border-transparent"
+                  className="w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bdtech-light focus:border-transparent"
                   placeholder="Enter your new password"
                 />
                 <button
@@ -453,7 +452,7 @@ const Profile: React.FC = () => {
                   type={showConfirmPassword ? "text" : "password"}
                   value={passwordData.confirmPassword}
                   onChange={(e) => handlePasswordChange('confirmPassword', e.target.value)}
-                  className="w-full pl-9 sm:pl-10 pr-10 py-2 sm:py-3 text-sm sm:text-base border border-gray-300 rounded-lg focus:ring-2 focus:ring-bdtech-light focus:border-transparent"
+                  className="w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-bdtech-light focus:border-transparent"
                   placeholder="Confirm your new password"
                 />
                 <button
@@ -469,14 +468,14 @@ const Profile: React.FC = () => {
             <div className="flex flex-col sm:flex-row justify-end space-y-3 sm:space-y-0 sm:space-x-4 pt-4">
               <button
                 onClick={handlePasswordCancel}
-                className="flex items-center justify-center space-x-2 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors duration-200 text-sm sm:text-base"
+                className="flex items-center justify-center space-x-2 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors duration-200"
               >
                 <X size={16} />
-                <span>Annuler</span>
+                <span>Cancel</span>
               </button>
               <button
                 onClick={handlePasswordSave}
-                className="flex items-center justify-center space-x-2 px-4 py-2 bg-bdtech-medium text-white rounded-lg hover:bg-bdtech-dark transition-colors duration-200 text-sm sm:text-base"
+                className="flex items-center justify-center space-x-2 px-4 py-2 bg-bdtech-medium text-white rounded-lg hover:bg-bdtech-dark transition-colors duration-200"
               >
                 <Save size={16} />
                 <span>Change Password</span>
@@ -484,12 +483,12 @@ const Profile: React.FC = () => {
             </div>
           </div>
         ) : (
-          <div className="flex items-center justify-between p-3 sm:p-4 border border-gray-200 rounded-lg">
+          <div className="flex items-center justify-between p-4 border border-gray-200 rounded-lg">
             <div className="flex items-center space-x-3">
               <Lock className="text-bdtech-medium" size={18} />
               <div>
-                <h4 className="font-semibold text-bdtech-dark text-sm sm:text-base">Password</h4>
-                <p className="text-xs sm:text-sm text-gray-600">Last modified 30 days ago</p>
+                <h4 className="font-semibold text-bdtech-dark">Password</h4>
+                <p className="text-sm text-gray-600">Last modified 30 days ago</p>
               </div>
             </div>
           </div>
@@ -499,20 +498,20 @@ const Profile: React.FC = () => {
   );
 
   const renderWishlistTab = () => (
-    <div className="space-y-4 sm:space-y-6">
-      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4 sm:p-6">
-        <h3 className="text-lg sm:text-xl font-semibold text-bdtech-dark mb-4 sm:mb-6">My Wishlist</h3>
+    <div className="space-y-6">
+      <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+        <h3 className="text-xl font-semibold text-bdtech-dark mb-6">My Wishlist</h3>
         
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {mockWishlist.map((item) => (
-            <div key={item.id} className="border border-gray-200 rounded-lg p-3 sm:p-4 hover:shadow-md transition-shadow duration-200">
-              <div className="flex items-center space-x-2 sm:space-x-3">
-                <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-bdtech-light to-bdtech-medium rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-sm sm:text-base">{item.image}</span>
+            <div key={item.id} className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow duration-200">
+              <div className="flex items-center space-x-3">
+                <div className="w-12 h-12 bg-gradient-to-br from-bdtech-light to-bdtech-medium rounded-lg flex items-center justify-center">
+                  <span className="text-white font-bold">{item.image}</span>
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h4 className="font-semibold text-bdtech-dark text-sm sm:text-base truncate">{item.name}</h4>
-                  <p className="text-bdtech-medium font-semibold text-sm sm:text-base">{item.price.toFixed(2)} €</p>
+                  <h4 className="font-semibold text-bdtech-dark truncate">{item.name}</h4>
+                  <p className="text-bdtech-medium font-semibold">{item.price.toFixed(2)} €</p>
                 </div>
                 <button className="text-red-500 hover:text-red-700 transition-colors duration-200 flex-shrink-0">
                   <Heart size={16} className="fill-current" />
@@ -540,11 +539,9 @@ const Profile: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <CatalogueNavbar />
+      <CatalogueNavbar isFixed={false} />
       
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
-
-
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-8">
         {/* Mobile Tabs */}
         <div className="lg:hidden mb-6">
           <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-2">

@@ -110,7 +110,7 @@ const ProductsCatalog: React.FC = () => {
       <CatalogueNavbar />
       
       {/* Header Section */}
-      <section className="bg-white border-b border-gray-200">
+      <section className="pt-40 sm:pt-44 bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

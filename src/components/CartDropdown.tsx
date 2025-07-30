@@ -54,7 +54,7 @@ const CartDropdown: React.FC = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
-          className="fixed inset-0 bg-black bg-opacity-50 z-50 flex justify-end"
+          className="fixed inset-0 bg-black bg-opacity-50 z-[70] flex justify-end"
         >
           <motion.div
             ref={dropdownRef}

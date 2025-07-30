@@ -32,7 +32,7 @@ const CatalogueHome: React.FC = () => {
       <CatalogueNavbar />
 
       {/* Hero Section */}
-      <section className="min-h-[calc(100vh-160px)] sm:min-h-[calc(100vh-180px)] flex items-center justify-center relative overflow-hidden py-8 sm:py-12 lg:py-16">
+      <section className="pt-40 sm:pt-44 min-h-[calc(100vh-160px)] sm:min-h-[calc(100vh-180px)] flex items-center justify-center relative overflow-hidden py-8 sm:py-12 lg:py-16">
         {/* Background gradient */}
         <div className="absolute inset-0 bg-gradient-to-br from-bdtech-light to-bdtech-medium"></div>
         

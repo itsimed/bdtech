@@ -7,7 +7,11 @@ import { createPortal } from 'react-dom';
 import { useCart } from '../context/CartContext';
 import CartDropdown from './CartDropdown';
 
-const CatalogueNavbar: React.FC = () => {
+interface CatalogueNavbarProps {
+  isFixed?: boolean;
+}
+
+const CatalogueNavbar: React.FC<CatalogueNavbarProps> = ({ isFixed = true }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [hoveredCategory, setHoveredCategory] = useState<string | null>(null);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -100,13 +104,13 @@ const CatalogueNavbar: React.FC = () => {
 
   return (
     <>
-      <nav className="bg-white shadow-sm border-b border-gray-100 sticky top-0 z-50">
+             <nav className={`bg-white shadow-sm border-b border-gray-100 ${isFixed ? 'fixed top-0 left-0 right-0 z-40' : ''}`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Top Row - Logo, Search, Actions */}
           <div className="flex items-center justify-between h-14 sm:h-16">
             {/* Logo */}
-            <button 
-              onClick={() => handleNavigation('/')}
+            <Link 
+              to="/"
               className="flex items-center focus:outline-none focus:ring-0 focus:border-0 focus:shadow-none"
             >
               <img 
@@ -114,7 +118,7 @@ const CatalogueNavbar: React.FC = () => {
                 alt="BDTECH Logo" 
                 className="w-24 h-24 sm:w-36 sm:h-36 object-contain select-none"
               />
-            </button>
+            </Link>
 
             {/* Search Bar - Hidden on mobile */}
             <div className="hidden sm:flex flex-1 max-w-2xl mx-4 lg:mx-8">
@@ -310,7 +314,7 @@ const CatalogueNavbar: React.FC = () => {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -5 }}
           transition={{ duration: 0.2 }}
-          className="hidden sm:block fixed bg-white border border-gray-200 rounded-b-lg shadow-xl z-50 min-w-64"
+          className="hidden sm:block fixed bg-white border border-gray-200 rounded-b-lg shadow-xl z-45 min-w-64"
           style={{
             left: `${dropdownPosition.left}px`,
             top: `${dropdownPosition.top - 1}px`, // Connecter visuellement

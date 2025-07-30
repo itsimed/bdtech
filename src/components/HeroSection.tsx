@@ -5,11 +5,11 @@ import { heroData } from '../data/home';
 
 const HeroSection: React.FC = () => {
   return (
-    <section id="home" className="relative min-h-[calc(100vh-4rem)] lg:min-h-[calc(100vh-5rem)] flex items-start bg-gradient-to-br from-white via-blue-50 to-bdtech-light/10 pt-0">
+    <section id="home" className="relative min-h-[calc(100vh-4rem)] lg:min-h-[calc(100vh-5rem)] flex items-start bg-gradient-to-br from-white via-blue-50 to-bdtech-light/10 pt-0 overflow-hidden">
       {/* Background Pattern */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-8 -right-8 w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-60 lg:h-60 xl:w-80 xl:h-80 bg-bdtech-light/20 rounded-full blur-3xl"></div>
-        <div className="absolute -bottom-8 -left-8 w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-60 lg:h-60 xl:w-80 xl:h-80 bg-bdtech-medium/20 rounded-full blur-3xl"></div>
+      <div className="absolute inset-0">
+        <div className="absolute top-0 right-0 w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-60 lg:h-60 xl:w-80 xl:h-80 bg-bdtech-light/20 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-24 h-24 sm:w-32 sm:h-32 md:w-40 md:h-40 lg:w-60 lg:h-60 xl:w-80 xl:h-80 bg-bdtech-medium/20 rounded-full blur-3xl"></div>
       </div>
 
       <div className="relative w-full max-w-7xl mx-auto px-3 sm:px-4 md:px-6 lg:px-8 py-0">
