@@ -85,10 +85,10 @@ const ProductPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Catalogue Navbar */}
-      <CatalogueNavbar />
+      <CatalogueNavbar isFixed={false} />
 
       {/* Product Details */}
-      <div className="pt-40 sm:pt-44 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8">
         {/* Back Button */}
         <motion.button
           initial={{ opacity: 0, x: -20 }}
