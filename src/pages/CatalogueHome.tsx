@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Monitor, Code, MousePointer, Wifi, Shield, FileText, Package, ArrowRight, Linkedin, Mail, Phone, MapPin } from 'lucide-react';
+import { Monitor, Code, MousePointer, Wifi, Shield, FileText, Package, ArrowRight, Mail, Phone, MapPin } from 'lucide-react';
 import { categories, products } from '../data/mockProducts';
 import { contactData } from '../data/home';
 import CatalogueNavbar from '../components/CatalogueNavbar';

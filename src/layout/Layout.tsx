@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Linkedin, Mail, Phone, MapPin, Home, User, Settings, MessageCircle, Package } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Menu, X, Mail, Phone, MapPin, Home, User, Settings, MessageCircle, Package } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { contactData } from '../data/home';
 
@@ -128,7 +128,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                  <div className="py-3 sm:py-4 px-3 sm:px-4 md:px-6 max-w-full">
                    {/* Navigation Items */}
                    <div className="space-y-1.5 sm:space-y-2 mb-4 sm:mb-6">
-                     {navItems.map((item, index) => (
+                     {navItems.map((item) => (
                        <button
                          key={item.name}
                          onClick={() => scrollToSection(item.href)}
