@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Mail, Phone, MapPin, Home, User, Settings, MessageCircle, Package } from 'lucide-react';
+import { Menu, X, Mail, Phone, MapPin, Home, User, Settings, MessageCircle, Package, LogOut } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { contactData } from '../data/home';
+import { useAuth } from '../context/AuthContext';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -11,6 +12,7 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('home');
+  const { user, isAuthenticated, logout } = useAuth();
 
 
   useEffect(() => {
@@ -165,11 +167,31 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               ))}
             </div>
 
-            <Link to="/login">
-              <button className="bg-bdtech-medium hover:bg-bdtech-dark text-white px-6 py-2 rounded-lg transition-colors duration-200 font-medium">
-                Catalog
-              </button>
-            </Link>
+            {isAuthenticated ? (
+              <div className="flex items-center space-x-4">
+                <span className="text-sm text-bdtech-dark">
+                  Welcome, {user?.firstName}
+                </span>
+                <Link to="/catalogue">
+                  <button className="bg-bdtech-medium hover:bg-bdtech-dark text-white px-4 py-2 rounded-lg transition-colors duration-200 font-medium text-sm">
+                    Catalog
+                  </button>
+                </Link>
+                <button 
+                  onClick={logout}
+                  className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors duration-200 font-medium text-sm flex items-center space-x-1"
+                >
+                  <LogOut size={14} />
+                  <span>Logout</span>
+                </button>
+              </div>
+            ) : (
+              <Link to="/login">
+                <button className="bg-bdtech-medium hover:bg-bdtech-dark text-white px-6 py-2 rounded-lg transition-colors duration-200 font-medium">
+                  Login
+                </button>
+              </Link>
+            )}
           </div>
 
                                                                                      {/* Mobile Navigation - Design amélioré */}
@@ -210,7 +232,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                    {/* Divider */}
                    <div className="border-t border-gray-200 mb-4 sm:mb-6"></div>
 
-                   {/* Login Button */}
+                   {/* Auth Buttons */}
                    <motion.div
                      initial={{ opacity: 0, y: 20 }}
                      animate={{ opacity: 1, y: 0 }}
@@ -219,13 +241,37 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                        delay: 0.4,
                        ease: "easeOut" 
                      }}
+                     className="space-y-2"
                    >
-                     <Link to="/login" className="block">
-                        <button className="w-full flex items-center justify-center space-x-1.5 sm:space-x-2 md:space-x-3 bg-gradient-to-r from-bdtech-medium to-bdtech-dark text-white px-3 sm:px-4 md:px-6 py-2.5 sm:py-3 md:py-4 rounded-lg sm:rounded-xl font-semibold text-xs sm:text-sm md:text-base shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105">
-                          <Package size={16} className="w-4 h-4 sm:w-5 sm:h-5" />
-                          <span>Catalog</span>
-                        </button>
-                      </Link>
+                     {isAuthenticated ? (
+                       <>
+                         <div className="text-center py-2">
+                           <span className="text-sm text-bdtech-dark">
+                             Welcome, {user?.firstName}
+                           </span>
+                         </div>
+                         <Link to="/catalogue" className="block">
+                           <button className="w-full flex items-center justify-center space-x-2 bg-gradient-to-r from-bdtech-medium to-bdtech-dark text-white px-4 py-3 rounded-lg font-semibold text-sm shadow-lg hover:shadow-xl transition-all duration-200">
+                             <Package size={16} />
+                             <span>Catalog</span>
+                           </button>
+                         </Link>
+                         <button 
+                           onClick={logout}
+                           className="w-full flex items-center justify-center space-x-2 bg-red-500 hover:bg-red-600 text-white px-4 py-3 rounded-lg font-semibold text-sm shadow-lg hover:shadow-xl transition-all duration-200"
+                         >
+                           <LogOut size={16} />
+                           <span>Logout</span>
+                         </button>
+                       </>
+                     ) : (
+                       <Link to="/login" className="block">
+                         <button className="w-full flex items-center justify-center space-x-2 bg-gradient-to-r from-bdtech-medium to-bdtech-dark text-white px-4 py-3 rounded-lg font-semibold text-sm shadow-lg hover:shadow-xl transition-all duration-200">
+                           <User size={16} />
+                           <span>Login</span>
+                         </button>
+                       </Link>
+                     )}
                    </motion.div>
                                    </div>
                 </motion.div>

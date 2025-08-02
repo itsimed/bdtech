@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { User, ArrowLeft } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
 interface FormErrors {
   email?: string;
@@ -17,6 +18,13 @@ const Login: React.FC = () => {
   const [errors, setErrors] = useState<FormErrors>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [loginError, setLoginError] = useState('');
+
+  const { login } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const from = location.state?.from?.pathname || '/catalogue';
 
   // Validation functions
   const validateEmail = (email: string): string | undefined => {
@@ -52,6 +60,9 @@ const Login: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    // Clear previous errors
+    setLoginError('');
+    
     // Validate form
     const emailError = validateEmail(formData.email);
     const passwordError = validatePassword(formData.password);
@@ -67,23 +78,18 @@ const Login: React.FC = () => {
 
     setIsSubmitting(true);
     
-    // Simulate API call
     try {
-      console.log('Login attempt with:', {
+      await login({
         email: formData.email,
         password: formData.password
       });
       
-      // Simulate loading
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      // Redirect to the intended page or catalogue
+      navigate(from, { replace: true });
       
-      // Success simulation
-      console.log('Login successful!');
-      alert('Login successful! (Simulation)');
-      
-    } catch (error) {
+    } catch (error: any) {
       console.error('Login error:', error);
-      alert('Login error. Please try again.');
+      setLoginError(error.message || 'Login failed. Please check your credentials.');
     } finally {
       setIsSubmitting(false);
     }
@@ -130,6 +136,13 @@ const Login: React.FC = () => {
             Access your client area
           </p>
         </div>
+
+        {/* Error Message */}
+        {loginError && (
+          <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
+            <p className="text-sm text-red-600">{loginError}</p>
+          </div>
+        )}
 
         {/* Form - Responsive spacing */}
         <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5 md:space-y-6">
