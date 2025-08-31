@@ -5,30 +5,23 @@ services:
     plan: free
     buildCommand: npm install
     startCommand: npm start
+    healthCheckPath: /api/health
     envVars:
       - key: NODE_ENV
         value: production
       - key: PORT
         value: 10000
       - key: MONGODB_URI
-        fromDatabase:
-          name: bdtech-mongodb
-          property: connectionString
+        value: mongodb+srv://bdtech:bouchibouchi@cluster0.w4brltg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
       - key: DB_NAME
         value: bdtech_catalog
       - key: JWT_SECRET
-        generateValue: true
+        value: bdtech_super_secret_jwt_key_2024_secure_and_private_production_render
       - key: JWT_EXPIRES_IN
         value: 7d
       - key: CORS_ORIGINS
-        value: https://bdtech-azure.vercel.app,http://localhost:5173,http://localhost:5174,http://localhost:5175,http://localhost:5176
+        value: https://bdtech-azure.vercel.app
       - key: RATE_LIMIT_WINDOW_MS
         value: 900000
       - key: RATE_LIMIT_MAX_REQUESTS
         value: 100
-
-databases:
-  - name: bdtech-mongodb
-    databaseName: bdtech_catalog
-    user: bdtech
-    plan: free
