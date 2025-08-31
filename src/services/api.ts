@@ -13,8 +13,7 @@ const getApiBaseUrl = () => {
     return 'http://localhost:5000/api';
   } else {
     // En production - Render backend
-    // Cette URL sera mise à jour après déploiement Render
-    return 'https://bdtech-backend-production.onrender.com/api';
+    return 'https://bdtech.onrender.com/api';
   }
 };
 
