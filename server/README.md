@@ -30,11 +30,11 @@ PORT=5000
 NODE_ENV=development
 
 # MongoDB Configuration
-MONGODB_URI=mongodb+srv://bdtech:bochibochi@cluster0.w4brltg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+MONGODB_URI=mongodb+srv://<username>:<password>@<cluster-host>/?retryWrites=true&w=majority&appName=<appName>
 DB_NAME=bdtech_catalog
 
 # JWT Configuration
-JWT_SECRET=bdtech_super_secret_jwt_key_2024_secure_and_private
+JWT_SECRET=<your-secure-jwt-secret>
 JWT_EXPIRES_IN=7d
 
 # CORS Configuration

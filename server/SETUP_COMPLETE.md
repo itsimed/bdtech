@@ -70,9 +70,9 @@ server/
 
 ### 🔧 Configuration MongoDB
 
-✅ **Connexion configurée :**
+✅ **Connexion configurée (exemple) :**
 ```
-mongodb+srv://bdtech:bochibochi@cluster0.w4brltg.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+mongodb+srv://<username>:<password>@<cluster-host>/?retryWrites=true&w=majority&appName=<appName>
 ```
 
 ✅ **Base de données :** `bdtech_catalog`
