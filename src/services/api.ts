@@ -70,6 +70,53 @@ export interface User {
   updatedAt: string;
 }
 
+export interface Product {
+  _id: string;
+  name: string;
+  description?: string;
+  category: string;
+  subcategory?: string;
+  brand?: string;
+  model?: string;
+  sku: string;
+  images: {
+    url: string;
+    alt?: string;
+    isPrimary: boolean;
+  }[];
+  primaryImage?: {
+    url: string;
+    alt?: string;
+  };
+  specifications?: Record<string, string>;
+  stock: {
+    quantity: number;
+    isAvailable: boolean;
+    warehouse?: string;
+  };
+  dimensions?: {
+    length: number;
+    width: number;
+    height: number;
+    unit: string;
+  };
+  weight?: {
+    value: number;
+    unit: string;
+  };
+  tags: string[];
+  featured: boolean;
+  isActive: boolean;
+  pricing: {
+    price: number;
+    originalPrice?: number;
+    discount: number;
+    currency: string;
+  };
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface AuthResponse {
   status: 'success' | 'error';
   message: string;
@@ -204,6 +251,19 @@ class ApiService {
   // Health check
   async healthCheck(): Promise<{ status: string; message: string; timestamp: string; environment: string }> {
     return this.request('/health');
+  }
+
+  // Product methods
+  async getProducts(): Promise<{ status: string; count: number; data: { products: Product[] } }> {
+    return this.request('/products');
+  }
+
+  async getProduct(id: string): Promise<{ status: string; data: { product: Product } }> {
+    return this.request(`/products/${id}`);
+  }
+
+  async searchProducts(query: string): Promise<{ status: string; count: number; data: { products: Product[] } }> {
+    return this.request(`/products/search?q=${encodeURIComponent(query)}`);
   }
 }
 

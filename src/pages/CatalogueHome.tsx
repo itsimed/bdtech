@@ -1,14 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Monitor, Code, MousePointer, Wifi, Shield, FileText, Package, ArrowRight, Mail, Phone, MapPin } from 'lucide-react';
-import { categories, products } from '../data/mockProducts';
+import { categories } from '../data/mockProducts';
 import { contactData } from '../data/home';
+import { apiService, type Product } from '../services/api';
 import CatalogueNavbar from '../components/CatalogueNavbar';
-import ProductCard from '../components/ProductCard';
 import ContactButton from '../components/ContactButton';
 
 const CatalogueHome: React.FC = () => {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
   const iconMap: { [key: string]: React.ComponentType<any> } = {
     Monitor: Monitor,
     Code: Code,
@@ -17,6 +21,25 @@ const CatalogueHome: React.FC = () => {
     Shield: Shield,
     FileText: FileText,
   };
+
+  // Load products from API
+  useEffect(() => {
+    const loadProducts = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const response = await apiService.getProducts();
+        setProducts(response.data.products);
+      } catch (err: any) {
+        setError(err.message || 'Failed to load products');
+        console.error('Error loading products:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadProducts();
+  }, []);
 
   // Scroll to top when component mounts
   useEffect(() => {
@@ -193,11 +216,106 @@ const CatalogueHome: React.FC = () => {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
-            {featuredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} showStockStatus={false} />
-            ))}
-          </div>
+          {loading ? (
+            <div className="text-center py-12">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-bdtech-medium mx-auto mb-4"></div>
+              <p className="text-gray-600">Loading your products...</p>
+            </div>
+          ) : error ? (
+            <div className="text-center py-12">
+              <p className="text-red-600 mb-4">{error}</p>
+              <button 
+                onClick={() => window.location.reload()} 
+                className="bg-bdtech-medium hover:bg-bdtech-dark text-white px-4 py-2 rounded-lg"
+              >
+                Retry
+              </button>
+            </div>
+          ) : featuredProducts.length === 0 ? (
+            <div className="text-center py-12">
+              <Package size={64} className="mx-auto text-gray-400 mb-4" />
+              <h3 className="text-lg font-medium text-gray-900 mb-2">No products available</h3>
+              <p className="text-gray-600">No products are currently available for your account.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+              {featuredProducts.map((product) => (
+                <motion.div
+                  key={product._id}
+                  className="bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden group"
+                >
+                  {/* Product Image */}
+                  <div className="relative h-32 sm:h-40 bg-gray-100">
+                    {product.primaryImage ? (
+                      <img
+                        src={product.primaryImage.url}
+                        alt={product.primaryImage.alt || product.name}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                    ) : (
+                      <div className="w-full h-full flex items-center justify-center text-gray-400">
+                        <Package size={32} />
+                      </div>
+                    )}
+                    
+                    {/* Badges */}
+                    <div className="absolute top-2 left-2 flex flex-col space-y-1">
+                      {product.featured && (
+                        <span className="bg-yellow-500 text-white text-xs font-semibold px-1.5 py-0.5 rounded-full">
+                          Featured
+                        </span>
+                      )}
+                      {product.pricing.discount > 0 && (
+                        <span className="bg-red-500 text-white text-xs font-semibold px-1.5 py-0.5 rounded-full">
+                          -{product.pricing.discount}%
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Product Content */}
+                  <div className="p-3">
+                    {/* Brand */}
+                    <div className="text-xs text-gray-500 mb-1">
+                      {product.brand}
+                    </div>
+
+                    {/* Title */}
+                    <h3 className="font-semibold text-gray-900 mb-2 text-sm line-clamp-2">
+                      {product.name}
+                    </h3>
+
+                    {/* Price */}
+                    <div className="flex flex-col">
+                      <div className="flex items-center space-x-1">
+                        <span className="text-base font-bold text-bdtech-dark">
+                          {product.pricing.price} {product.pricing.currency}
+                        </span>
+                        {product.pricing.originalPrice && product.pricing.originalPrice > product.pricing.price && (
+                          <span className="text-xs text-gray-500 line-through">
+                            {product.pricing.originalPrice}
+                          </span>
+                        )}
+                      </div>
+                      {product.pricing.discount > 0 && (
+                        <span className="text-xs text-green-600 font-medium">
+                          Save {product.pricing.discount}%
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Stock Status */}
+                    <div className="mt-2 flex items-center space-x-1">
+                      <div className={`w-1.5 h-1.5 rounded-full ${product.stock.isAvailable ? 'bg-green-500' : 'bg-red-500'}`}></div>
+                      <span className="text-xs text-gray-600">
+                        {product.stock.isAvailable ? 'In stock' : 'Out of stock'}
+                      </span>
+                    </div>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          )}
 
           <motion.div
             initial={{ opacity: 0, y: 30 }}
