@@ -12,9 +12,9 @@ const getApiBaseUrl = () => {
     // En développement local
     return 'http://localhost:5000/api';
   } else {
-    // En production - utiliser une API backend déployée
-    // TODO: Remplacer par l'URL de votre backend déployé
-    return 'https://your-backend.onrender.com/api';
+    // En production - Render backend
+    // Cette URL sera mise à jour après déploiement Render
+    return 'https://bdtech-backend-production.onrender.com/api';
   }
 };
 
