@@ -1,4 +1,24 @@
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
+// Détection automatique de l'environnement pour l'URL de l'API
+const getApiBaseUrl = () => {
+  // Si une variable d'environnement est définie, l'utiliser
+  if (import.meta.env.VITE_API_BASE_URL) {
+    return import.meta.env.VITE_API_BASE_URL;
+  }
+  
+  // Sinon, détecter automatiquement selon l'environnement
+  const hostname = window.location.hostname;
+  
+  if (hostname === 'localhost' || hostname === '127.0.0.1') {
+    // En développement local
+    return 'http://localhost:5000/api';
+  } else {
+    // En production - utiliser une API backend déployée
+    // TODO: Remplacer par l'URL de votre backend déployé
+    return 'https://your-backend.onrender.com/api';
+  }
+};
+
+const API_BASE_URL = getApiBaseUrl();
 
 export interface RegisterData {
   firstName: string;
