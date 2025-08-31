@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { apiService, type Product } from '../services/api';
 import { motion } from 'framer-motion';
-import { useParams, useSearchParams, Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, Package, SortAsc, Grid, List, ShoppingBag, Star } from 'lucide-react';
 import CatalogueNavbar from '../components/CatalogueNavbar';
 
 const ProductsCatalog: React.FC = () => {
   const { categorie, souscategorie } = useParams<{ categorie?: string; souscategorie?: string }>();
-  const [searchParams] = useSearchParams();
   
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
